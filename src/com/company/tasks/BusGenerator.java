@@ -1,5 +1,6 @@
 package com.company.tasks;
 
+import com.company.CONF;
 import com.company.Tunnel;
 import com.company.buses.Bus;
 import com.company.buses.types.Size;
@@ -12,8 +13,6 @@ public class BusGenerator implements Runnable {
     private Tunnel tunnel;
     private int busCount;
 
-    public static final String ANSI_CYAN = "\u001B[36m";
-
     public BusGenerator(Tunnel tunnel, int busCount) {
         this.tunnel = tunnel;
         this.busCount = busCount;
@@ -23,7 +22,7 @@ public class BusGenerator implements Runnable {
     public void run() {
         int count = 0;
         while (count < busCount) {
-            Thread.currentThread().setName(ANSI_CYAN + "Генератор автобусов");
+            Thread.currentThread().setName(CONF.ANSI_CYAN + "Генератор автобусов");
             count++;
             tunnel.add(new Bus(getRandomSize(), getRandomType(), "bus #" + count)); // Генерируем случайный автобус и помещаем его в туннель
             try {
@@ -36,7 +35,7 @@ public class BusGenerator implements Runnable {
 
     private int getRandomTime() {
         Random rand = new Random();
-        return rand.nextInt(35)*10 + 250;
+        return rand.nextInt(CONF.MAX_TIME - CONF.MIN_TIME) + CONF.MIN_TIME;
     }
 
     private Type getRandomType() {
